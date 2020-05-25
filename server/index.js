@@ -19,6 +19,12 @@ app.use((req, res, next) => {
   next();
 });
 
+// gets module
+app.get('/:id', (req, res) => {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+
 //send Listing and Assets metadata to local db
 app.post('/similarprops', function (req, res, next = () => {}) {
 
@@ -116,10 +122,6 @@ app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
     });
 });
 
-// gets module
-app.get('/:id', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../public/index.html'));
-});
 
 
 module.exports = app;
