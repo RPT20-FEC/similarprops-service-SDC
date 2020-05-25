@@ -18,7 +18,7 @@ class App extends React.Component {
 
   fetchListingsMeta(id) {
     $.ajax({
-      url: 'http://127.0.0.1:4000/listings/' + id + '/similarprops',
+      url: 'http://50.18.97.234/listings/' + id + '/similarprops',
       type: 'GET',
       dataType: 'json',
       contentType: 'application/json',
@@ -38,7 +38,7 @@ class App extends React.Component {
     var currentListingId = this.props.id;
 
     $.ajax({
-      url: 'http://127.0.0.1:4000/similarprops',
+      url: 'http://50.18.97.234/similarprops',
       type: 'POST',
       contentType: 'application/json',
       success: (data) => {
