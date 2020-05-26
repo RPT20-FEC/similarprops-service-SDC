@@ -29,7 +29,7 @@ app.get('/:id', (req, res) => {
 app.post('/similarprops', function (req, res, next = () => {}) {
 
   const requestListings = axios.get(`http://204.236.167.174/listings/metadata/all`);
-  const requestAssets = axios.get(`http://18.144.125.169/listings/`);
+  const requestAssets = axios.get(`http://18.144.125.169/listings`);
 
   axios.all([requestListings, requestAssets])
     .then(axios.spread((...responses) => {
