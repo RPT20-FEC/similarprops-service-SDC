@@ -12,8 +12,7 @@ height: 200px;
 `
 
 export const Image = styled.img`
-max-height: 200px;
-display: block;
+object-fit: cover;
 `
 
 export const FavoriteIcon = styled.button`
