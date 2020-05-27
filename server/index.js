@@ -60,24 +60,31 @@ app.post('/similarprops', function (req, res, next = () => {}) {
 
 
       getURLS = function(array) {
-        let allPhotos = [];
+        let allAssets = [];
 
         for (let i = 0; i < array.length; i++) {
+          let singleAsset = {};
+          singleAsset.listingId = array[i].listingId;
           let photos = array[i].assets;
-          oneListingPhotos = [];
+
+          singleAsset.assets = [];
           for (let j = 0; j < photos.length; j++) {
-            oneListingPhotos.push(photos[j].url);
+            singleAsset.assets.push(photos[j].url);
           }
-          allPhotos.push(oneListingPhotos);
+
+        allAssets.push(singleAsset);
+
         };
 
-        return allPhotos;
+        return allAssets;
       };
 
       let listingAssets = getURLS(requestAssetsRes.data);
 
-      listingAssets.forEach(urlArray => {
-        similarProperties.updateMany({}, {$set: {'assets': urlArray}}, {upsert: true})
+
+
+      listingAssets.forEach(assetObj => {
+        similarProperties.updateMany({'listingId': assetObj.listingId}, {$set: {'assets': assetObj.assets}}, {upsert: true})
           .then(result => {
             console.log("inserted assets:", result);
           })
