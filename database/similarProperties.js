@@ -14,7 +14,7 @@ const similarPropertiesSchema = new mongoose.Schema({
   reviews: Number
 });
 
-const similarProperties = mongoose.model('Similar Properties', similarPropertiesSchema);
+const similarProperties = mongoose.model('SimilarProperties', similarPropertiesSchema);
 
 
 
