@@ -72,7 +72,7 @@ const insertSeedData = function() {
       totalBeds: Math.round(Math.random() * 3),
       headline: lorem.generateWords(5),
       pricing: generateRandomPrice(),
-      stars: generateRandomRating()
+      stars: generateRandomRating(),
       reviews: Math.round(Math.random() * 1000)
     };
 
