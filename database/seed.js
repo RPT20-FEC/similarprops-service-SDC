@@ -57,7 +57,7 @@ generateRandomRating = function() {
 const insertSeedData = function() {
   const seederData = [];
 
-  for (var i = 1; i < 101; i++) {
+  for (var i = 1001; i < 1120; i++) {
 
     var singleProp = {
       listingId: i,
