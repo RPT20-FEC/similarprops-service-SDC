@@ -17,8 +17,6 @@ class App extends React.Component {
   }
 
   fetchListingsMeta(id) {
-    var currentListingId = this.props.id;
-
     $.ajax({
       url: 'http://50.18.97.234/listings/' + id + '/similarprops',
       type: 'GET',

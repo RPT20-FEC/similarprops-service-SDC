@@ -14,7 +14,6 @@
     "react-dev": "webpack-dev-server",
     "server-dev": "nodemon server/index.js",
     "db:setup": "node database/seed.js",
-    "liveDB:setup": "node database/realDataSeed.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
