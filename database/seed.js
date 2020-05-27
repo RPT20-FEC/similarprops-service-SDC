@@ -51,11 +51,6 @@ generateRandomRating = function() {
 
 // };
 
-const generateRandomRating = function() {
-  var precision = 100;
-  var randomNum = Math.floor(Math.random() * (5 * precision - 3 * precision) + 3 * precision) / (1 * precision);
-  return randomNum;
-};
 
 /*---------------------seeder function-----------------------*/
 
