@@ -12,7 +12,7 @@ height: 200px;
 `
 
 export const Image = styled.img`
-height: 200px;
+max-height: 200px;
 display: block;
 `
 
