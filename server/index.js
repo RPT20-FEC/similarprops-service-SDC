@@ -4,12 +4,24 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const path = require('path');
 
+const compression = require("compression");
+var expressStaticGzip = require("express-static-gzip");
+
 const similarProperties = require('../database/similarProperties.js');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static(__dirname + '/../client/dist'));
+
+app.use(compression());
+
+app.use(
+  '/',
+  expressStaticGzip(path.join(__dirname + '/../client/dist'))
+);
+
+// app.use(express.static(__dirname + '/../client/dist'));
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
