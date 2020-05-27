@@ -13,7 +13,7 @@ height: 200px;
 
 export const Image = styled.img`
 height: 200px;
-object-fit: cover;
+display: block;
 `
 
 export const FavoriteIcon = styled.button`
