@@ -1,10 +1,20 @@
 import styled from 'styled-components';
 
 export const Module = styled.div`
-  padding-right: 80px;
-  padding-left: 80px;
+  padding-right: 40px;
+  padding-left: 40px;
   justify-content: left;
 `
+export const Header = styled.header`
+color: rgb(34, 34, 34);
+font-weight: 500;
+font-size: 22px;
+line-height: 26px;
+padding-left: 40px;
+padding-top: 50px;
+padding-bottom: 30px;
+`
+
 export const ImageContainer = styled.section`
   z-index: 1;
   position: relative !important;
@@ -32,10 +42,10 @@ export const Details = styled.section`
 `
 
 export const SleepArrangement = styled.span`
-  font-size: 16px;
+  font-size: 14px;
   display: block;
   float: left;
-  color: #808080;
+  color: rgb(113, 113, 113);
 `
 
 export const HeadlinePricing = styled.section`
@@ -45,7 +55,7 @@ export const HeadlinePricing = styled.section`
 `
 
 export const Reviews = styled.span`
-  color: #808080;
+  color: rgb(113, 113, 113);
 `
 
 export const Star = styled.span`

@@ -3,7 +3,7 @@ import ReactDom from 'react-dom';
 
 import $ from 'jquery';
 import Properties from './Properties.jsx';
-import {Module} from './styledComponents.jsx';
+import {Header, Module} from './styledComponents.jsx';
 
 class App extends React.Component {
   constructor() {
@@ -61,7 +61,7 @@ class App extends React.Component {
   render() {
     return (
       <Module className="sim-props">
-        <h3 id='main-header' style={{padding: `0px 0px 0px 40px`}}>More places to stay</h3>
+        <Header>More places to stay</Header>
         <div className ="properties">
         <Properties properties={this.state.similarProperties} />
         </div>
