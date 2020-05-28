@@ -10,6 +10,9 @@ color: rgb(34, 34, 34);
 font-weight: 500;
 font-size: 22px;
 line-height: 26px;
+padding-left: 40px;
+padding-top: 50px;
+padding-bottom: 30px;
 `
 
 export const ImageContainer = styled.section`
