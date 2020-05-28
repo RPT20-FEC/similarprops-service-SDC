@@ -1,7 +1,6 @@
 
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 import {Image} from './styledComponents.jsx';
 
