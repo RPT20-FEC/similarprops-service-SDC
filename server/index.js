@@ -20,8 +20,6 @@ app.use(
   expressStaticGzip(path.join(__dirname + '/../client/dist'))
 );
 
-// app.use(express.static(__dirname + '/../client/dist'));
-
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
