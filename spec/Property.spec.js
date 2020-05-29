@@ -8,7 +8,7 @@ import Property from '../client/src/components/Property.jsx';
 configure({ adapter: new Adapter() });
 
 describe('Property Component', () => {
-  it('renders', () => {
+  xit('renders', () => {
     const wrapper = shallow(<Property/>);
     expect(wrapper.exists()).toBe(true);
   });
