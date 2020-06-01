@@ -1,6 +1,3 @@
-import { configure } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-
 import React from 'react';
 import { shallow, mount } from 'enzyme';
 
@@ -9,7 +6,7 @@ import Property from '../../client/src/components/Property.jsx';
 
 const sampleData = require('../sampleData.js');
 
-configure({ adapter: new Adapter() });
+
 
 describe('When the Properties Component renders...', () => {
 
