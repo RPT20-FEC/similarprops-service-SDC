@@ -3,13 +3,13 @@ import Adapter from 'enzyme-adapter-react-16';
 
 import React from 'react';
 import { shallow, mount } from 'enzyme';
-import App from '../client/src/components/App.jsx';
+import Property from '../../client/src/components/Property.jsx';
 
 configure({ adapter: new Adapter() });
 
-describe('App Component', () => {
+describe('Property Component', () => {
   xit('renders', () => {
-    const wrapper = shallow(<App/>);
+    const wrapper = shallow(<Property/>);
     expect(wrapper.exists()).toBe(true);
   });
 });

@@ -3,7 +3,7 @@ const supertest = require('supertest');
 const request = supertest(app);
 import axios from 'axios';
 
-describe('API Endpoints Test Suite', () => {
+xdescribe('API Endpoints Test Suite', () => {
 
   it('sends index.html based on unique listing id', async done => {
     const response = await request.get('/1006');
