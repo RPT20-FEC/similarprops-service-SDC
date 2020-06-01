@@ -24,5 +24,4 @@ describe('When the Properties Component renders...', () => {
     expect(wrapper.containsMatchingElement(<Property/>));
   });
 
-
 });
