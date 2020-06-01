@@ -1,8 +1,12 @@
 # AIRBNB CLONE: SIMILAR PROPERTIES SERVICE
 
 > This repo is the service-side of an AirBnB clone. This service is the "More Places to Stay" module of a listing's page.
->
-> The deployed version can be viewed at: http://50.18.97.234/<listingid 1001 to 1119>
+> This module contains an outer carousel, an inner carousel of a listing's photos, the listing's details, and a favorite icon (UI only) on hover.
+> The deployed version can be viewed at: http://50.18.97.234/1006
+
+Note:
+> Please use listing id's 1001 through 1119 as the endpoint
+> To access the JSON object of a listing's 12 similar properties, please use http://50.18.97.234/listings/1006/similarprops
 
 ## Related Projects
 > To view the other modules' repos of our clone, please visit the link below.
