@@ -34,8 +34,46 @@ app.get('/:id', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
+// retrieves all similar properties
+app.get('/similarprops', (req, res) => {
+
+});
+
+// retrieves one property by id
+app.get('/similarprops/:id', (req, res) => {
+
+});
+
+
+// gets 12 similar properties (& assets) from local db based on Listing ID
+app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
+
+
+  axios.get(`http://204.236.167.174/listings/${req.params.id}`)
+    .then(listings => {
+
+      similarProperties.find(
+        { $and: [
+          {'location': listings.data.location},
+          {'listingId': {$ne: req.params.id} }
+        ]}
+      )
+      .limit(12)
+      .exec((err, listings) => {
+        if (err) {
+          return console.log(err);
+        }
+        res.status(200).json(listings);
+        next();
+      });
+    })
+    .catch(err => {
+      console.error('Could not retrieve & update 12 similar properties!', err);
+    });
+});
 
 //send Listing and Assets metadata to local db
+// keeping for now to load carousel- will refactor UI to get only and delete this endpoint
 app.post('/similarprops', function (req, res, next = () => {}) {
 
   const requestListings = axios.get(`http://204.236.167.174/listings/metadata/all`);
@@ -111,33 +149,23 @@ app.post('/similarprops', function (req, res, next = () => {}) {
   next();
 });
 
-// gets 12 similar properties (& assets) from local db based on Listing ID
+// creates a single new listing
+app.post('/similarprops/:id', (req, res) => {
 
-app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
-
-
-  axios.get(`http://204.236.167.174/listings/${req.params.id}`)
-    .then(listings => {
-
-      similarProperties.find(
-        { $and: [
-          {'location': listings.data.location},
-          {'listingId': {$ne: req.params.id} }
-        ]}
-      )
-      .limit(12)
-      .exec((err, listings) => {
-        if (err) {
-          return console.log(err);
-        }
-        res.status(200).json(listings);
-        next();
-      });
-    })
-    .catch(err => {
-      console.error('Could not retrieve & update 12 similar properties!', err);
-    });
 });
+
+// updates a single listing
+app.put('/similarprops/:id', (req, res) => {
+
+});
+
+// deletes a single listing
+app.delete('/similarprops/:id', (req, res) => {
+
+});
+
+
+
 
 
 
