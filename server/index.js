@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
@@ -39,18 +39,18 @@ app.use((req, res, next) => {
 
 
 // retrieves one property by listing id
-app.get('/similarprops/:id', (req, res, next = () => {}) => {
+// POSTMAN TEST PASS
+app.get('/similarprops/:id', (req, res) => {
   getPropertyorProperties(req.params.id, (property) => {
-    res.status(200).json(property);
-    next();
+    res.status(200).send(property);
   });
 });
 
 // retrieves all similar properties
-app.get('/similarprops', (req, res, next = () => {}) => {
+// POSTMAN TEST PASS
+app.get('/similarprops', (req, res) => {
   getPropertyorProperties(req.params.id, (property) => {
-    res.status(200).json(property);
-    next();
+    res.status(200).send(property);
   });
 });
 
@@ -160,23 +160,25 @@ app.post('/similarprops', function (req, res, next = () => {}) {
 });
 
 // creates a single new listing
+// POSTMAN TEST PASS
 app.post('/similarprops/:id', (req, res) => {
   createProperty(req.body, ()=> {
     res.status(201).send('Property listing created!');
-    next();
   })
 });
 
 // updates a single listing
+// POSTMAN TEST PASS
 app.put('/similarprops/:id', (req, res) => {
   updateProperty(req.params.id, req.body);
-  res.status(200).end();
+  res.status(200).send(`Property listing at ${req.params.id} updated`);
 });
 
 // deletes a single listing
+// POSTMAN TEST PASS
 app.delete('/similarprops/:id', (req, res) => {
   deleteProperty(req.params.id, () => {
-    res.status(200);
+    res.status(200).send(`Property listing at ${req.params.id} deleted`);
   });
 
 });
