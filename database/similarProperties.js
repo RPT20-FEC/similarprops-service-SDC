@@ -8,7 +8,7 @@ const similarPropertiesSchema = new mongoose.Schema({
   location: String,
   typeOfRoom: String,
   totalBeds: Number,
-  headline: String,
+  headline: {type: String, required: true, unique: true},
   price: Number,
   stars: Number,
   reviews: Number
@@ -18,4 +18,4 @@ const similarProperties = mongoose.model('SimilarProperties', similarPropertiesS
 
 
 
-module.exports = similarProperties;
+module.exports.similarProperties = similarProperties;

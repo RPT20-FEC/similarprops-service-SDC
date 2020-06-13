@@ -7,7 +7,14 @@ const path = require('path');
 const compression = require("compression");
 var expressStaticGzip = require("express-static-gzip");
 
-const similarProperties = require('../database/similarProperties.js');
+// const similarProperties = require('../database/similarProperties.js');
+
+const {
+  getPropertyorProperties,
+  createProperty,
+  updateProperty,
+  deleteProperty
+} = require('../database/similarProperties.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,19 +36,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// gets module
-app.get('/:id', (req, res) => {
-  res.sendFile(path.join(__dirname + '/index.html'));
+
+
+// retrieves one property by listing id
+app.get('/similarprops/:id', (req, res, next = () => {}) => {
+  getPropertyorProperties(req.params.id, (property) => {
+    res.status(200).json(property);
+    next();
+  });
 });
 
 // retrieves all similar properties
-app.get('/similarprops', (req, res) => {
-
-});
-
-// retrieves one property by id
-app.get('/similarprops/:id', (req, res) => {
-
+app.get('/similarprops', (req, res, next = () => {}) => {
+  getPropertyorProperties(req.params.id, (property) => {
+    res.status(200).json(property);
+    next();
+  });
 });
 
 
@@ -151,19 +161,29 @@ app.post('/similarprops', function (req, res, next = () => {}) {
 
 // creates a single new listing
 app.post('/similarprops/:id', (req, res) => {
-
+  createProperty(req.body, ()=> {
+    res.status(201).send('Property listing created!');
+    next();
+  })
 });
 
 // updates a single listing
 app.put('/similarprops/:id', (req, res) => {
-
+  updateProperty(req.params.id, req.body);
+  res.status(200).end();
 });
 
 // deletes a single listing
 app.delete('/similarprops/:id', (req, res) => {
+  deleteProperty(req.params.id, () => {
+    res.status(200);
+  });
 
 });
 
+app.get('/:id', (req, res) => {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
 
 
 
