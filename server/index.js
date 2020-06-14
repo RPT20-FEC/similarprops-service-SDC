@@ -1,4 +1,4 @@
-require('dotenv').config();
+// require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
@@ -7,7 +7,14 @@ const path = require('path');
 const compression = require("compression");
 var expressStaticGzip = require("express-static-gzip");
 
-const similarProperties = require('../database/similarProperties.js');
+// const similarProperties = require('../database/similarProperties.js');
+
+const {
+  getPropertyorProperties,
+  createProperty,
+  updateProperty,
+  deleteProperty
+} = require('../database/similarProperties.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,13 +36,54 @@ app.use((req, res, next) => {
   next();
 });
 
-// gets module
-app.get('/:id', (req, res) => {
-  res.sendFile(path.join(__dirname + '/index.html'));
+
+
+// retrieves one property by listing id
+// POSTMAN TEST PASS
+app.get('/similarprops/:id', (req, res) => {
+  getPropertyorProperties(req.params.id, (property) => {
+    res.status(200).send(property);
+  });
+});
+
+// retrieves all similar properties
+// POSTMAN TEST PASS
+app.get('/similarprops', (req, res) => {
+  getPropertyorProperties(req.params.id, (property) => {
+    res.status(200).send(property);
+  });
 });
 
 
+// gets 12 similar properties (& assets) from local db based on Listing ID
+app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
+
+
+  axios.get(`http://204.236.167.174/listings/${req.params.id}`)
+    .then(listings => {
+
+      similarProperties.find(
+        { $and: [
+          {'location': listings.data.location},
+          {'listingId': {$ne: req.params.id} }
+        ]}
+      )
+      .limit(12)
+      .exec((err, listings) => {
+        if (err) {
+          return console.log(err);
+        }
+        res.status(200).json(listings);
+        next();
+      });
+    })
+    .catch(err => {
+      console.error('Could not retrieve & update 12 similar properties!', err);
+    });
+});
+
 //send Listing and Assets metadata to local db
+// keeping for now to load carousel- will refactor UI to get only and delete this endpoint
 app.post('/similarprops', function (req, res, next = () => {}) {
 
   const requestListings = axios.get(`http://204.236.167.174/listings/metadata/all`);
@@ -111,33 +159,35 @@ app.post('/similarprops', function (req, res, next = () => {}) {
   next();
 });
 
-// gets 12 similar properties (& assets) from local db based on Listing ID
-
-app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
-
-
-  axios.get(`http://204.236.167.174/listings/${req.params.id}`)
-    .then(listings => {
-
-      similarProperties.find(
-        { $and: [
-          {'location': listings.data.location},
-          {'listingId': {$ne: req.params.id} }
-        ]}
-      )
-      .limit(12)
-      .exec((err, listings) => {
-        if (err) {
-          return console.log(err);
-        }
-        res.status(200).json(listings);
-        next();
-      });
-    })
-    .catch(err => {
-      console.error('Could not retrieve & update 12 similar properties!', err);
-    });
+// creates a single new listing
+// POSTMAN TEST PASS
+app.post('/similarprops/:id', (req, res) => {
+  createProperty(req.body, ()=> {
+    res.status(201).send('Property listing created!');
+  })
 });
+
+// updates a single listing
+// POSTMAN TEST PASS
+app.put('/similarprops/:id', (req, res) => {
+  updateProperty(req.params.id, req.body);
+  res.status(200).send(`Property listing at ${req.params.id} updated`);
+});
+
+// deletes a single listing
+// POSTMAN TEST PASS
+app.delete('/similarprops/:id', (req, res) => {
+  deleteProperty(req.params.id, () => {
+    res.status(200).send(`Property listing at ${req.params.id} deleted`);
+  });
+
+});
+
+app.get('/:id', (req, res) => {
+  res.sendFile(path.join(__dirname + '/index.html'));
+});
+
+
 
 
 
