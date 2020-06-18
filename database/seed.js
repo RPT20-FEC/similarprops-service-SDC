@@ -71,7 +71,7 @@ const insertSeedData = () => {
 
   for (var i = 1; i < 10000000; i++) {
     writer.write({
-      listingId: 0,
+      listingId: counter++,
       assets: generateRandomPhotos(),
       location: randomLocation[Math.round(Math.random() * 7)],
       typeOfRoom: lorem.generateWords(2),
