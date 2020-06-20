@@ -9,5 +9,5 @@ CREATE TABLE properties (
   headline VARCHAR(100),
   price INT CHECK(price > 0),
   stars INT CHECK(stars > 0),
-  reviews INT,
+  reviews INT
 );

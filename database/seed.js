@@ -1,5 +1,10 @@
-const db = require('./index.js');
-// const similarProperties = require('./similarProperties.js');
+const pool = require('./pool.js');
+const {seedDB} = require('./postgres.js');
+
+const fs = require('fs');
+const csvWriter = require('csv-write-stream');
+var writer = csvWriter();
+
 
 const LoremIpsum = require('lorem-ipsum').LoremIpsum;
 
@@ -61,17 +66,15 @@ generateRandomPhotos = function() {
 
 /*---------------------seeder function-----------------------*/
 
-const fs = require('fs');
-const csvWriter = require('csv-write-stream');
-var writer = csvWriter();
-var counter = 0;
 
 const insertSeedData = () => {
+  seedDB();
   writer.pipe(fs.createWriteStream('seedData.csv'));
 
+  let listingId = 0;
   for (var i = 1; i < 10000000; i++) {
     writer.write({
-      listingId: counter++,
+      id: listingId++,
       assets: generateRandomPhotos(),
       location: randomLocation[Math.round(Math.random() * 7)],
       typeOfRoom: lorem.generateWords(2),
