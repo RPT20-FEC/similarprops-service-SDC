@@ -10,10 +10,10 @@
   "scripts": {
     "build": "webpack --mode=production",
     "build:watch": "webpack --watch",
-    "start": "nodemon server/start.js",
+    "start": "nodemon --max-old-space-size=8192 server/start.js",
     "react-dev": "webpack-dev-server",
     "server-dev": "nodemon server/index.js",
-    "db:setup": "node database/seed.js",
+    "db:setup": "node --max-old-space-size=8192 database/seed.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },

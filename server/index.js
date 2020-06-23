@@ -10,7 +10,7 @@ var expressStaticGzip = require("express-static-gzip");
 // const similarProperties = require('../database/similarProperties.js');
 
 const {
-  getPropertyorProperties,
+  getPropertyOrProperties,
   createProperty,
   updateProperty,
   deleteProperty
@@ -41,7 +41,7 @@ app.use((req, res, next) => {
 // retrieves one property by listing id
 // POSTMAN TEST PASS
 app.get('/similarprops/:id', (req, res) => {
-  getPropertyorProperties(req.params.id, (property) => {
+  getPropertyOrProperties(req.params.id, (property) => {
     res.status(200).send(property);
   });
 });
@@ -49,7 +49,7 @@ app.get('/similarprops/:id', (req, res) => {
 // retrieves all similar properties
 // POSTMAN TEST PASS
 app.get('/similarprops', (req, res) => {
-  getPropertyorProperties(req.params.id, (property) => {
+  getPropertyOrProperties(req.params.id, (property) => {
     res.status(200).send(property);
   });
 });
@@ -175,7 +175,6 @@ app.put('/similarprops/:id', (req, res) => {
 });
 
 // deletes a single listing
-// POSTMAN TEST PASS
 app.delete('/similarprops/:id', (req, res) => {
   deleteProperty(req.params.id, () => {
     res.status(200).send(`Property listing at ${req.params.id} deleted`);

@@ -54,7 +54,7 @@ const deleteProperty = (id, cb) => {
 
 
 module.exports = {
-  getPropertyorProperties,
+  getPropertyOrProperties,
   createProperty,
   updateProperty,
   deleteProperty

@@ -1,13 +1,13 @@
 const pool = require('./pool.js');
 
 //WIP FILE PATH
-const seedDB = () => {
-  pool
-    .query(`\COPY properties FROM '______seedData.csv' DELIMITER ',' CSV HEADER;`)
-    .then(console.log('Successfully seeded SQL database.'))
-    .catch(console.log(err))
+// const seedDB = (file) => {
+//   pool
+//     .query(`\COPY properties FROM '/Users/minhngo/Desktop/SDC/similarprops-service-sdc/seedData${file++}.csv' DELIMITER ',' CSV HEADER;`)
+//     .then(console.log('Successfully seeded SQL database.'))
+//     .catch(console.log(err))
 
-};
+// };
 
 
 const getPropertyOrProperties = (id, cb) => {
@@ -103,12 +103,11 @@ const deleteProperty = (id, cb) => {
       .query('DELETE FROM properties WHERE id = $1', [id])
       .then(results => cb(results.rows))
       .catch(console.log(err))
-
+  }
 };
 
 
 module.exports = {
-  seedDB,
   getPropertyOrProperties,
   getSimilarProperties,
   createProperty,
