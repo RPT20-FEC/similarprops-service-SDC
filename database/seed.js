@@ -1,10 +1,6 @@
 const pool = require('./pool.js');
-// const {seedDB} = require('./postgres.js');
-
 const fs = require('fs');
 const csvWriter = require('csv-write-stream');
-
-
 const LoremIpsum = require('lorem-ipsum').LoremIpsum;
 
 const lorem = new LoremIpsum({
@@ -45,12 +41,13 @@ generateRandomPrice = function() {
 };
 
 generateRandomRating = function() {
-  var precision = 100;
-  var randomNum = Math.floor(Math.random() * (5 * precision - 3 * precision) + 3 * precision) / (1 * precision);
-  
+  let precision = 100;
+  let randomNum = Math.floor(Math.random() * (5 * precision - 3 * precision) + 3 * precision) / (1 * precision);
+
   if (randomNum === 0) {
-    randomNum === 3.00;
-  }
+    randomNum === 3.14;
+  };
+
   return randomNum;
 };
 
@@ -64,13 +61,13 @@ generateRandomPhotos = function() {
 
   let selected = shuffled.slice(0, randomNum); // array of urls
 
-  let string = '{[';
+  let string = '{';
   for (x = 0; x < selected.length; x++) {
 
     string += selected[x] + ',';
 
     if (x === selected.length - 1) {
-      string += selected[x] + ']}';
+      string += selected[x] + '}';
     };
 
   };
@@ -80,58 +77,75 @@ generateRandomPhotos = function() {
 };
 
 
-/*---------------------seeder function-----------------------*/
+/*---------------------data generation function-----------------------*/
 
 
-const generateSeedData = () => {
-  let listingId = 0;
+// class Writer {
 
-  for (var x = 0; x < 100; x++) {
-    let writer = csvWriter();
-    writer.pipe(fs.createWriteStream(`seedData${x}.csv`));
+//     constructor(file) {
+//         this.writer = csvWriter();
+//         this.writer.pipe(fs.createWriteStream(file, { flags: 'a' }));
+//     }
 
-    for (var i = 0; i < 10000; i++) {
+//     write(obj) {
+//         // if .write returns false we have to wait until `drain` is emitted
+//         if(!this.writer.write(obj))
+//             return new Promise(resolve => this.writer.once('drain', resolve))
 
-      writer.write({
-        id: listingId++,
-        assets: generateRandomPhotos(),
-        location: randomLocation[Math.round(Math.random() * (randomLocation.length - 1))],
-        typeOfRoom: lorem.generateWords(2),
-        totalBeds: Math.round(Math.random() * 3),
-        headline: lorem.generateWords(5) + listingId.toString(),
-        pricing: Math.floor(Math.random() * (400 - 75 + 1) + 75),
-        reviews: Math.round(Math.random() * 1000),
-        stars: generateRandomRating()
-      });
+//         return true;
+//     }
+
+//     end() {
+//         // Wrap it in a promise if you wish to wait for the callback.
+//         this.writer.end();
+//     }
+
+// }
+
+// (async() => {
+//     console.log('start time is: ', new Date().toUTCString()); // start time
+
+//     const writer = new Writer('fakeData.csv');
+
+//     for (let i = 0; i < 1000; i++) {
+//         const res = writer.write({
+//           id: i,
+//           assets: generateRandomPhotos(),
+//           location: randomLocation[Math.round(Math.random() * (randomLocation.length - 1))],
+//           typeOfRoom: lorem.generateWords(2),
+//           totalBeds: Math.round(Math.random() * 3),
+//           headline: lorem.generateWords(5) + i.toString(),
+//           pricing: Math.floor(Math.random() * (400 - 75 + 1) + 75),
+//           stars: generateRandomRating(),
+//           reviews: Math.round(Math.random() * 1000)
+//         });
+
+//         if (res instanceof Promise) {
+//             await res;
+//         }
+//     }
 
 
-    };
-    writer.end();
-  };
+//     writer.end(console.log('end time is: ', new Date().toUTCString()));
 
 
-};
+// })();
 
 
-seedDB = () => {
-  let file = 0;
+/*---------------------database seeder function-----------------------*/
 
-  while (file < 100) {
-    pool.query(`\COPY properties FROM '/Users/minhngo/Desktop/SDC/similarprops-service-sdc/seedData${file++}.csv' DELIMITER ',' CSV HEADER;`, (err, data) => {
-      if (err) {
-        return console.log(err);
-      }
-      console.log('successfully seeded the db with current file.')
-    });
-  };
+// seedDB = () => {
+//   console.log('start time for db seed script is: ', new Date().toUTCString());
+//   pool.query(`\COPY properties FROM '/Users/minhngo/Desktop/SDC/similarprops-service-sdc/fakeData.csv' DELIMITER ',' CSV HEADER;`, (err, data) => {
+//     if (err) {
+//       return console.log(err);
+//     }
+//     console.log('end time for db seed script is: ', new Date().toUTCString());
+//   });
+
+// };
+
+// seedDB();
 
 
-};
 
-console.time(generateSeedData);
-generateSeedData();
-console.timeEnd(generateSeedData);
-
-console.time(seedDB);
-seedDB();
-console.timeEnd(seedDB);

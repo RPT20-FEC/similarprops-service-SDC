@@ -11,10 +11,11 @@ var expressStaticGzip = require("express-static-gzip");
 
 const {
   getPropertyOrProperties,
+  getSimilarProperties,
   createProperty,
   updateProperty,
   deleteProperty
-} = require('../database/similarProperties.js');
+} = require('../database/postgres.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -42,7 +43,7 @@ app.use((req, res, next) => {
 // POSTMAN TEST PASS
 app.get('/similarprops/:id', (req, res) => {
   getPropertyOrProperties(req.params.id, (property) => {
-    res.status(200).send(property);
+    res.status(200).json(property);
   });
 });
 
@@ -54,110 +55,125 @@ app.get('/similarprops', (req, res) => {
   });
 });
 
-
-// gets 12 similar properties (& assets) from local db based on Listing ID
 app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
 
-
-  axios.get(`http://204.236.167.174/listings/${req.params.id}`)
-    .then(listings => {
-
-      similarProperties.find(
-        { $and: [
-          {'location': listings.data.location},
-          {'listingId': {$ne: req.params.id} }
-        ]}
-      )
-      .limit(12)
-      .exec((err, listings) => {
-        if (err) {
-          return console.log(err);
-        }
-        res.status(200).json(listings);
-        next();
+  app.get(`/similarprops/${id}`)
+    .then(property => {
+      let currentLocation = property.location;
+      let currentPricing = property.pricing;
+    })
+    .then((currentLocation, currentPricing) => {
+      getPropertyOrProperties(req.params.id, currentLocation, currentPricing, (similarProps) => {
+        res.status(200).send(similarProps);
       });
     })
-    .catch(err => {
-      console.error('Could not retrieve & update 12 similar properties!', err);
-    });
+    .catch(err => console.log(err));
+
 });
+
+// gets 12 similar properties (& assets) from local db based on Listing ID
+// app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
+
+
+//   axios.get(`http://204.236.167.174/listings/${req.params.id}`)
+//     .then(listings => {
+
+//       similarProperties.find(
+//         { $and: [
+//           {'location': listings.data.location},
+//           {'listingId': {$ne: req.params.id} }
+//         ]}
+//       )
+//       .limit(12)
+//       .exec((err, listings) => {
+//         if (err) {
+//           return console.log(err);
+//         }
+//         res.status(200).json(listings);
+//         next();
+//       });
+//     })
+//     .catch(err => {
+//       console.error('Could not retrieve & update 12 similar properties!', err);
+//     });
+// });
 
 //send Listing and Assets metadata to local db
 // keeping for now to load carousel- will refactor UI to get only and delete this endpoint
-app.post('/similarprops', function (req, res, next = () => {}) {
+// app.post('/similarprops', function (req, res, next = () => {}) {
 
-  const requestListings = axios.get(`http://204.236.167.174/listings/metadata/all`);
-  const requestAssets = axios.get(`http://18.144.125.169/listings`);
+//   const requestListings = axios.get(`http://204.236.167.174/listings/metadata/all`);
+//   const requestAssets = axios.get(`http://18.144.125.169/listings`);
 
-  axios.all([requestListings, requestAssets])
-    .then(axios.spread((...responses) => {
-      const requestListingsRes = responses[0];
-      const requestAssetsRes = responses[1];
+//   axios.all([requestListings, requestAssets])
+//     .then(axios.spread((...responses) => {
+//       const requestListingsRes = responses[0];
+//       const requestAssetsRes = responses[1];
 
-      let listingData = requestListingsRes.data;
+//       let listingData = requestListingsRes.data;
 
-      for (let x = 0; x < listingData.length; x++) {
-        let singlePropToInsert = listingData[x];
-        similarProperties.updateOne({'listingId': singlePropToInsert.listingId}, {
-          'listingId': singlePropToInsert.listingId,
-          'headline' : singlePropToInsert.headline,
-          'location' : singlePropToInsert.location,
-          'typeOfRoom': singlePropToInsert.typeOfRoom,
-          'totalBeds': singlePropToInsert.totalBeds,
-          'price': singlePropToInsert.price,
-          'stars': singlePropToInsert.stars,
-          'reviews' : singlePropToInsert.reviews
-        }, {upsert: true})
-          .then(result => {
-            console.log("inserted listing: ", result);
-          })
-          .catch(err => {
-            console.error('Error posting Listing metadata', err);
-          });
-      };
-
-
-      getURLS = function(array) {
-        let allAssets = [];
-
-        for (let i = 0; i < array.length; i++) {
-          let singleAsset = {};
-          singleAsset.listingId = array[i].listingId;
-          let photos = array[i].assets;
-
-          singleAsset.assets = [];
-          for (let j = 0; j < photos.length; j++) {
-            singleAsset.assets.push(photos[j].url);
-          }
-
-        allAssets.push(singleAsset);
-
-        };
-
-        return allAssets;
-      };
-
-      let listingAssets = getURLS(requestAssetsRes.data);
+//       for (let x = 0; x < listingData.length; x++) {
+//         let singlePropToInsert = listingData[x];
+//         similarProperties.updateOne({'listingId': singlePropToInsert.listingId}, {
+//           'listingId': singlePropToInsert.listingId,
+//           'headline' : singlePropToInsert.headline,
+//           'location' : singlePropToInsert.location,
+//           'typeOfRoom': singlePropToInsert.typeOfRoom,
+//           'totalBeds': singlePropToInsert.totalBeds,
+//           'price': singlePropToInsert.price,
+//           'stars': singlePropToInsert.stars,
+//           'reviews' : singlePropToInsert.reviews
+//         }, {upsert: true})
+//           .then(result => {
+//             console.log("inserted listing: ", result);
+//           })
+//           .catch(err => {
+//             console.error('Error posting Listing metadata', err);
+//           });
+//       };
 
 
+//       getURLS = function(array) {
+//         let allAssets = [];
 
-      listingAssets.forEach(assetObj => {
-        similarProperties.updateMany({'listingId': assetObj.listingId}, {$set: {'assets': assetObj.assets}}, {upsert: true})
-          .then(result => {
-            console.log("inserted assets:", result);
-          })
-          .catch(err => {
-            console.error('Error posting Listing metadata', err);
-          });
-      });
-    }))
-    .catch(err => {
-      console.log(err);
-    });
+//         for (let i = 0; i < array.length; i++) {
+//           let singleAsset = {};
+//           singleAsset.listingId = array[i].listingId;
+//           let photos = array[i].assets;
 
-  res.status(201).end();
-  next();
-});
+//           singleAsset.assets = [];
+//           for (let j = 0; j < photos.length; j++) {
+//             singleAsset.assets.push(photos[j].url);
+//           }
+
+//         allAssets.push(singleAsset);
+
+//         };
+
+//         return allAssets;
+//       };
+
+//       let listingAssets = getURLS(requestAssetsRes.data);
+
+
+
+//       listingAssets.forEach(assetObj => {
+//         similarProperties.updateMany({'listingId': assetObj.listingId}, {$set: {'assets': assetObj.assets}}, {upsert: true})
+//           .then(result => {
+//             console.log("inserted assets:", result);
+//           })
+//           .catch(err => {
+//             console.error('Error posting Listing metadata', err);
+//           });
+//       });
+//     }))
+//     .catch(err => {
+//       console.log(err);
+//     });
+
+//   res.status(201).end();
+//   next();
+// });
 
 // creates a single new listing
 // POSTMAN TEST PASS
