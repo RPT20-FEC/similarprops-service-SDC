@@ -10,10 +10,10 @@
   "scripts": {
     "build": "webpack --mode=production",
     "build:watch": "webpack --watch",
-    "start": "nodemon server/start.js",
+    "start": "nodemon --max-old-space-size=8192 server/start.js",
     "react-dev": "webpack-dev-server",
     "server-dev": "nodemon server/index.js",
-    "db:setup": "node database/seed.js",
+    "db:setup": "node --max-old-space-size=8192 database/seed.js",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -22,6 +22,7 @@
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",
     "css-loader": "^3.5.3",
+    "csv-write-stream": "^2.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-static-gzip": "^2.0.6",
@@ -29,6 +30,7 @@
     "lorem-ipsum": "^2.0.3",
     "mongoose": "^5.9.9",
     "nodemon": "^2.0.3",
+    "pg": "^8.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-items-carousel": "^2.8.0",

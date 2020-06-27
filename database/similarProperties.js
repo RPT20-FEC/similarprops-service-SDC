@@ -16,7 +16,7 @@ const similarPropertiesSchema = new mongoose.Schema({
 
 const similarProperties = mongoose.model('SimilarProperties', similarPropertiesSchema);
 
-const getPropertyorProperties = (id, cb) => {
+const getPropertyOrProperties = (id, cb) => {
   let option = id ? {listingId: id} || {headline: id} : {};
 
   similarProperties.find(option).exec((err, data) => {
@@ -54,7 +54,7 @@ const deleteProperty = (id, cb) => {
 
 
 module.exports = {
-  getPropertyorProperties,
+  getPropertyOrProperties,
   createProperty,
   updateProperty,
   deleteProperty
