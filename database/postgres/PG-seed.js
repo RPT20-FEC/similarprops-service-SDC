@@ -1,4 +1,4 @@
-// const pool = require('./riak-client.js');
+const pool = require('./pool.js');
 const fs = require('fs');
 const csvWriter = require('csv-write-stream');
 const LoremIpsum = require('lorem-ipsum').LoremIpsum;
@@ -51,7 +51,7 @@ generateRandomRating = function() {
   return randomNum;
 };
 
-
+// WILL NEED REFACTORING FOR NOSQL DB
 generateRandomPhotos = function() {
   const shuffled = stockImages.sort(() => 0.5 - Math.random());
 
@@ -61,7 +61,18 @@ generateRandomPhotos = function() {
 
   let selected = shuffled.slice(0, randomNum); // array of urls
 
-  return selected;
+  let string = '{';
+  for (x = 0; x < selected.length; x++) {
+
+    string += selected[x] + ',';
+
+    if (x === selected.length - 1) {
+      string += selected[x] + '}';
+    };
+
+  };
+
+  return string;
 
 };
 
@@ -96,7 +107,7 @@ generateRandomPhotos = function() {
 
 //     const writer = new Writer('fakeData.csv');
 
-//     for (let i = 0; i < 10; i++) {
+//     for (let i = 0; i < 1000; i++) {
 //         const res = writer.write({
 //           id: i,
 //           assets: generateRandomPhotos(),
@@ -119,33 +130,6 @@ generateRandomPhotos = function() {
 
 
 // })();
-
-const insertSeedData = function() {
-
-  let seederData = [];
-  for (var i = 0; i < 100; i++) {
-
-    var singleProp = {
-      listingId: i,
-      assets: stockImages,
-      location: randomLocation[Math.round(Math.random() * 7)],
-      typeOfRoom: lorem.generateWords(2),
-      totalBeds: Math.round(Math.random() * 3),
-      headline: lorem.generateWords(5),
-      pricing: generateRandomPrice(),
-      stars: generateRandomRating(),
-      reviews: Math.round(Math.random() * 1000)
-    };
-
-    seederData.push(singleProp);
-    let jsonData = JSON.stringify(seederData);
-    fs.writeFileSync('fakeData.json', jsonData);
-  }
-
-};
-
-insertSeedData();
-
 
 
 /*---------------------database seeder function-----------------------*/
