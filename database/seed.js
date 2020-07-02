@@ -123,7 +123,7 @@ generateRandomPhotos = function() {
 const insertSeedData = function() {
 
   let seederData = [];
-  for (var i = 0; i < 100; i++) {
+  for (var i = 0; i < 10000000; i++) {
 
     var singleProp = {
       listingId: i,
@@ -139,7 +139,7 @@ const insertSeedData = function() {
 
     seederData.push(singleProp);
     let jsonData = JSON.stringify(seederData);
-    fs.writeFileSync('fakeData.json', jsonData);
+    fs.writeFileSync('seedData.json', jsonData);
   }
 
 };
