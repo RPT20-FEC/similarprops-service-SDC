@@ -1,10 +1,10 @@
 var couchbase = require('couchbase');
-var cluster = new couchbase.Cluster('couchbase://127.0.0.1', {
-  username: 'username',
-  password: 'password',
+var cluster = new couchbase.Cluster('127.0.0.1', {
+  username: 'admin',
+  password: 'workwork',
 });
 
-var bucket = cluster.bucket('default');
+var bucket = cluster.bucket('testbucket');
 var coll = bucket.defaultCollection();
 
 coll.upsert('testdoc', { name: 'Frank' })
