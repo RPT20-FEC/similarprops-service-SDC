@@ -4,8 +4,14 @@ import ReactDom from 'react-dom';
 import App from './components/App.jsx';
 
 const getId = () => {
-  return window.location.pathname.substr(1);
+  let url = window.location.href;
+  if (url[url.length - 1] === '/') {
+    var id = '1';
+  } else {
+    var id = url.slice(-1);
+  }
+  console.log(`Selected id is: ${id}`);
+  return id;
 };
-
 
 ReactDom.render(<App id={getId()}/>, document.getElementById('sim-props'));
