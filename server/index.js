@@ -7,15 +7,10 @@ const path = require('path');
 const compression = require("compression");
 var expressStaticGzip = require("express-static-gzip");
 
-// const similarProperties = require('../database/similarProperties.js');
-
 const {
   getPropertyOrProperties,
-  getSimilarProperties,
-  createProperty,
-  updateProperty,
-  deleteProperty
-} = require('../database/postgres.js');
+  getSimilarProperties
+} = require('../database/couchbase/couchbase.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -40,15 +35,15 @@ app.use((req, res, next) => {
 
 
 // retrieves one property by listing id
-// POSTMAN TEST PASS
+
 app.get('/similarprops/:id', (req, res) => {
   getPropertyOrProperties(req.params.id, (property) => {
-    res.status(200).json(property);
+    res.status(200).send(property);
   });
 });
 
 // retrieves all similar properties
-// POSTMAN TEST PASS
+
 app.get('/similarprops', (req, res) => {
   getPropertyOrProperties(req.params.id, (property) => {
     res.status(200).send(property);
@@ -177,26 +172,26 @@ app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
 
 // creates a single new listing
 // POSTMAN TEST PASS
-app.post('/similarprops/:id', (req, res) => {
-  createProperty(req.body, ()=> {
-    res.status(201).send('Property listing created!');
-  })
-});
+// app.post('/similarprops/:id', (req, res) => {
+//   createProperty(req.body, ()=> {
+//     res.status(201).send('Property listing created!');
+//   })
+// });
 
-// updates a single listing
-// POSTMAN TEST PASS
-app.put('/similarprops/:id', (req, res) => {
-  updateProperty(req.params.id, req.body);
-  res.status(200).send(`Property listing at ${req.params.id} updated`);
-});
+// // updates a single listing
+// // POSTMAN TEST PASS
+// app.put('/similarprops/:id', (req, res) => {
+//   updateProperty(req.params.id, req.body);
+//   res.status(200).send(`Property listing at ${req.params.id} updated`);
+// });
 
-// deletes a single listing
-app.delete('/similarprops/:id', (req, res) => {
-  deleteProperty(req.params.id, () => {
-    res.status(200).send(`Property listing at ${req.params.id} deleted`);
-  });
+// // deletes a single listing
+// app.delete('/similarprops/:id', (req, res) => {
+//   deleteProperty(req.params.id, () => {
+//     res.status(200).send(`Property listing at ${req.params.id} deleted`);
+//   });
 
-});
+// });
 
 app.get('/:id', (req, res) => {
   res.sendFile(path.join(__dirname + '/index.html'));

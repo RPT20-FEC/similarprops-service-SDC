@@ -61,6 +61,19 @@ generateRandomPhotos = function() {
 
   let selected = shuffled.slice(0, randomNum); // array of urls
 
+  // let string = '[';
+  // for (x = 0; x < selected.length; x++) {
+
+  //   string += selected[x] + ',';
+
+  //   if (x === selected.length - 1) {
+  //     string += selected[x] + ']';
+  //   };
+
+  // };
+
+  // return string;
+
   return selected;
 
 };
@@ -69,83 +82,104 @@ generateRandomPhotos = function() {
 /*---------------------data generation function-----------------------*/
 
 
-// class Writer {
+class Writer {
 
-//     constructor(file) {
-//         this.writer = csvWriter();
-//         this.writer.pipe(fs.createWriteStream(file, { flags: 'a' }));
-//     }
+    constructor(file) {
+        this.writer = csvWriter();
+        this.writer.pipe(fs.createWriteStream(file, { flags: 'a' }));
+    }
 
-//     write(obj) {
-//         // if .write returns false we have to wait until `drain` is emitted
-//         if(!this.writer.write(obj))
-//             return new Promise(resolve => this.writer.once('drain', resolve))
+    write(obj) {
+        // if .write returns false we have to wait until `drain` is emitted
+        if(!this.writer.write(obj))
+            return new Promise(resolve => this.writer.once('drain', resolve))
 
-//         return true;
-//     }
+        return true;
+    }
 
-//     end() {
-//         // Wrap it in a promise if you wish to wait for the callback.
-//         this.writer.end();
-//     }
+    end() {
+        // Wrap it in a promise if you wish to wait for the callback.
+        this.writer.end();
+    }
 
-// }
+}
 
-// (async() => {
-//     console.log('start time is: ', new Date().toUTCString()); // start time
+(async() => {
+    console.log('start time is: ', new Date().toUTCString()); // start time
 
-//     const writer = new Writer('fakeData.csv');
+    const writer = new Writer('seedData.csv');
 
-//     for (let i = 0; i < 10; i++) {
-//         const res = writer.write({
-//           id: i,
-//           assets: generateRandomPhotos(),
-//           location: randomLocation[Math.round(Math.random() * (randomLocation.length - 1))],
-//           typeOfRoom: lorem.generateWords(2),
-//           totalBeds: Math.round(Math.random() * 3),
-//           headline: lorem.generateWords(5) + i.toString(),
-//           pricing: Math.floor(Math.random() * (400 - 75 + 1) + 75),
-//           stars: generateRandomRating(),
-//           reviews: Math.round(Math.random() * 1000)
-//         });
+    for (let i = 0; i < 10000000; i++) {
+        const res = writer.write({
+          listingId: i,
+          assets: generateRandomPhotos(),
+          location: randomLocation[Math.round(Math.random() * (randomLocation.length - 1))],
+          typeOfRoom: lorem.generateWords(2),
+          totalBeds: Math.round(Math.random() * 3),
+          headline: lorem.generateWords(5) + i.toString(),
+          pricing: Math.floor(Math.random() * (400 - 75 + 1) + 75),
+          stars: generateRandomRating(),
+          reviews: Math.round(Math.random() * 1000)
+        });
 
-//         if (res instanceof Promise) {
-//             await res;
-//         }
-//     }
-
-
-//     writer.end(console.log('end time is: ', new Date().toUTCString()));
+        if (res instanceof Promise) {
+            await res;
+        }
+    }
 
 
-// })();
+    writer.end(console.log('end time is: ', new Date().toUTCString()));
 
-const insertSeedData = function() {
 
-  let seederData = [];
-  for (var i = 0; i < 10000000; i++) {
+})();
 
-    var singleProp = {
-      listingId: i,
-      assets: stockImages,
-      location: randomLocation[Math.round(Math.random() * 7)],
-      typeOfRoom: lorem.generateWords(2),
-      totalBeds: Math.round(Math.random() * 3),
-      headline: lorem.generateWords(5),
-      pricing: generateRandomPrice(),
-      stars: generateRandomRating(),
-      reviews: Math.round(Math.random() * 1000)
-    };
 
-    seederData.push(singleProp);
-    let jsonData = JSON.stringify(seederData);
-    fs.writeFileSync('seedData.json', jsonData);
-  }
 
-};
+// const CSVToJSON = require('csvtojson');
 
-insertSeedData();
+// // convert users.csv file to JSON array
+// CSVToJSON().fromFile('seedData.csv')
+//     .then(results => {
 
+//       let stringified = JSON.stringify(results);
+//       fs.writeFile('seedData.json', stringified, function(err) {
+//         if (err) {return console.log(err)};
+//       });
+//         // console.log(results);
+//     }).catch(err => {
+//         // log error if any
+//         console.log(err);
+//     });
+
+// const insertSeedData = function() {
+
+//   let seederData = [];
+//   for (var i = 0; i < 10000000; i++) {
+
+//     var singleProp = {
+//       listingId: i,
+//       assets: stockImages,
+//       location: randomLocation[Math.round(Math.random() * 7)],
+//       typeOfRoom: lorem.generateWords(2),
+//       totalBeds: Math.round(Math.random() * 3),
+//       headline: lorem.generateWords(5),
+//       pricing: generateRandomPrice(),
+//       stars: generateRandomRating(),
+//       reviews: Math.round(Math.random() * 1000)
+//     };
+
+//     seederData.push(singleProp);
+//     let jsonData = JSON.stringify(seederData);
+//     fs.writeFile('seedData.json', jsonData, function(err) {
+//       if (err) {return console.log(err)};
+//     });
+//   }
+
+// };
+
+// console.log('start time is: ', new Date().toUTCString());
+// insertSeedData();
+// console.log('end time is: ', new Date().toUTCString());
 
 
 /*---------------------database seeder function-----------------------*/
