@@ -10,7 +10,7 @@ var expressStaticGzip = require("express-static-gzip");
 const {
   getPropertyOrProperties,
   getSimilarProperties
-} = require('../database/couchbase/couchbase.js');
+} = require('../database/postgres/postgres.js');
 
 const app = express();
 app.use(bodyParser.json());
@@ -36,33 +36,54 @@ app.use((req, res, next) => {
 
 // retrieves one property by listing id
 
-app.get('/similarprops/:id', (req, res) => {
-  getPropertyOrProperties(req.params.id, (property) => {
-    res.status(200).send(property);
-  });
+app.get('/similarprops/:id', async (req, res) => {
+
+  let property = await getPropertyOrProperties(req.params.id);
+  let propertyInfo = property.rows;
+  res.status(200).send(propertyInfo);
+  // getPropertyOrProperties(req.params.id, (property) => {
+  //   res.status(200).send(property);
+  // });
 });
 
 // retrieves all similar properties
 
-app.get('/similarprops', (req, res) => {
-  getPropertyOrProperties(req.params.id, (property) => {
-    res.status(200).send(property);
-  });
+app.get('/similarprops', async (req, res) => {
+  let property = await getPropertyOrProperties(req.params.id);
+  let propertyInfo = property.rows;
+  res.status(200).send(propertyInfo);
+  // getPropertyOrProperties(req.params.id, (property) => {
+  //   res.status(200).send(property);
+  // });
 });
 
-app.get('/listings/:id/similarprops', function (req, res, next = () => {}) {
+app.get('/listings/:id/similarprops', async (req, res) => {
 
-  app.get(`/similarprops/${id}`)
-    .then(property => {
-      let currentLocation = property.location;
-      let currentPricing = property.pricing;
-    })
-    .then((currentLocation, currentPricing) => {
-      getPropertyOrProperties(req.params.id, currentLocation, currentPricing, (similarProps) => {
-        res.status(200).send(similarProps);
-      });
-    })
-    .catch(err => console.log(err));
+  let property = await getPropertyOrProperties(req.params.id);
+  console.log(property);
+
+  
+
+  let currentLocation = property.rows.location;
+  let currentPricing = property.rows.pricing;
+
+  console.log(currentLocation);
+  console.log(currentPricing);
+  let similarProps = await getSimilarProperties(req.params.id, currentLocation, currentPricing);
+  res.status(200).send(similarProps);
+
+
+
+  // return property;
+  // let currentLocation = property.location;
+  // let currentPricing = property.pricing;
+
+
+  //   getSimilarProperties(req.params.id, currentLocation, currentPricing, (similarProps) => {
+  //     res.status(200).send(similarProps);
+  //   });
+
+
 
 });
 
