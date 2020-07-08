@@ -60,29 +60,14 @@ app.get('/similarprops', async (req, res) => {
 app.get('/listings/:id/similarprops', async (req, res) => {
 
   let property = await getPropertyOrProperties(req.params.id);
-  console.log(property);
+  console.log(property.rows);
 
-  
+  let currentLocation = property.rows[0].location;
+  let currentPricing = property.rows[0].pricing;
 
-  let currentLocation = property.rows.location;
-  let currentPricing = property.rows.pricing;
-
-  console.log(currentLocation);
-  console.log(currentPricing);
   let similarProps = await getSimilarProperties(req.params.id, currentLocation, currentPricing);
-  res.status(200).send(similarProps);
 
-
-
-  // return property;
-  // let currentLocation = property.location;
-  // let currentPricing = property.pricing;
-
-
-  //   getSimilarProperties(req.params.id, currentLocation, currentPricing, (similarProps) => {
-  //     res.status(200).send(similarProps);
-  //   });
-
+  res.status(200).send(similarProps.rows);
 
 
 });

@@ -33,7 +33,7 @@ const getPropertyOrProperties = (id) => {
 const getSimilarProperties = (currentId, currentLocation, currentPricing) => {
 
   return pool
-    .query(`SELECT * FROM properties WHERE id != ${currentId} AND location = ${currentLocation} AND pricing BETWEEN (${currentPricing} - 25) AND (${currentPricing} + 25) AND id > 8999999 LIMIT 12`)
+    .query(`SELECT * FROM properties WHERE id != ${currentId} AND location = '${currentLocation}' AND pricing BETWEEN (${currentPricing} - 25) AND (${currentPricing} + 25) AND id > 8999999 LIMIT 12`)
     // .then(results => cb(results.rows))
     .catch(err=> console.log(err))
 };
