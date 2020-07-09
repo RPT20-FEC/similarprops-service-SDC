@@ -4,7 +4,7 @@ import ReactDom from 'react-dom';
 import App from './components/App.jsx';
 
 const getId = () => {
-  let url = window.location.href;
+  let url = window.location.pathname;
   if (url[url.length - 1] === '/') {
     var id = '1';
   } else {
