@@ -12,18 +12,6 @@ const {
   getSimilarProperties
 } = require('../database/couchbase/couchbase.js');
 
-// ESTABLISH COUCHBASE CONNECTION ------------------ //
-// var couchbase = require('couchbase');
-
-// var cluster = new couchbase.Cluster('127.0.0.1', {
-//   username: 'admin',
-//   password: 'workwork',
-// });
-
-// var bucket = cluster.bucket('similarprops');
-// var coll = bucket.defaultCollection();
-
-// ------------------------------------------------ //
 
 const app = express();
 app.use(bodyParser.json());
@@ -53,31 +41,36 @@ app.get('/similarprops/:id', async (req, res) => {
     res.status(200).send(propertyInfo);
   } else {
     res.status(404);
-  }
+  };
 
 });
 
 // retrieves all similar properties
-// app.get('/similarprops', async (req, res) => {
-//   let property = await getPropertyOrProperties(req.params.id);
-//   let propertyInfo = property.rows;
-//   res.status(200).send(propertyInfo);
-// });
+app.get('/similarprops', async (req, res) => {
+  let properties = await getPropertyOrProperties(req.params.id);
 
-// app.get('/listings/:id/similarprops', async (req, res) => {
+  if (properties) {
+    res.status(200).send(properties);
+  } else {
+    res.status(404);
+  };
 
-//   let property = await getPropertyOrProperties(req.params.id);
-//   console.log(property.rows);
+});
 
-//   let currentLocation = property.rows[0].location;
-//   let currentPricing = property.rows[0].pricing;
+// retrieves 12 similar properties
+app.get('/listings/:id/similarprops', async (req, res) => {
 
-//   let similarProps = await getSimilarProperties(req.params.id, currentLocation, currentPricing);
+  let currentProperty = await getPropertyOrProperties(req.params.id);
+  // console.log('current property here: ', currentProperty);
 
-//   res.status(200).send(similarProps.rows);
+  let currentLocation = currentProperty.location;
+
+  let similarProps = await getSimilarProperties(req.params.id, currentLocation);
+
+  res.status(200).send(similarProps);
 
 
-// });
+});
 
 
 app.get('/:id', (req, res) => {
