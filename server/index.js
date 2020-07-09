@@ -7,22 +7,21 @@ const path = require('path');
 const compression = require("compression");
 var expressStaticGzip = require("express-static-gzip");
 
-// const {
-//   getPropertyOrProperties,
-//   getSimilarProperties
-// } = require('../database/postgres/postgres.js');
+const {
+  getPropertyOrProperties,
+  getSimilarProperties
+} = require('../database/couchbase/couchbase.js');
 
 // ESTABLISH COUCHBASE CONNECTION ------------------ //
-var couchbase = require('couchbase');
+// var couchbase = require('couchbase');
 
-var cluster = new couchbase.Cluster('127.0.0.1', {
-  username: 'admin',
-  password: 'workwork',
-});
+// var cluster = new couchbase.Cluster('127.0.0.1', {
+//   username: 'admin',
+//   password: 'workwork',
+// });
 
-var bucket = cluster.bucket('similarprops');
-var coll = bucket.defaultCollection();
-var N1qlQuery = require('couchbase').N1qlQuery;
+// var bucket = cluster.bucket('similarprops');
+// var coll = bucket.defaultCollection();
 
 // ------------------------------------------------ //
 
@@ -46,25 +45,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// retrieves one property by listing id
+// retrieves one property by listing id or headline as endpoint
 app.get('/similarprops/:id', async (req, res) => {
-  // let property = await getPropertyOrProperties(req.params.id);
-  // let propertyInfo = property.rows;
-  // res.status(200).send(propertyInfo);
+  let propertyInfo = await getPropertyOrProperties(req.params.id);
 
-  var listingId = req.params.id;
-  var query = `SELECT * FROM \`similarprops\` WHERE listingId =$LISTINGID`;
-
-
-  try {
-    var result = await cluster.query(query, {parameters: {LISTINGID: `${listingId}`}});
-    console.log(result.rows);
-
-    let rows = result.rows;
-    res.send(rows);
-  } catch (error) {
-    res.status(404).json({"error": "No match for " + error});
+  if (propertyInfo) {
+    res.status(200).send(propertyInfo);
+  } else {
+    res.status(404);
   }
+
 });
 
 // retrieves all similar properties
