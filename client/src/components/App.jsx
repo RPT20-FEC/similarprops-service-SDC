@@ -13,12 +13,11 @@ class App extends React.Component {
     };
 
     this.fetchListingsMeta.bind(this);
-    this.postListingsMeta.bind(this);
   }
 
   fetchListingsMeta(id) {
     $.ajax({
-      url: 'http://50.18.97.234/listings/' + id + '/similarprops',
+      url: 'http://localhost:4000/listings/' + id + '/similarprops',
       type: 'GET',
       dataType: 'json',
       contentType: 'application/json',
@@ -34,27 +33,27 @@ class App extends React.Component {
     });
   };
 
-  postListingsMeta() {
-    var currentListingId = this.props.id;
+  // postListingsMeta() {
+  //   var currentListingId = this.props.id;
 
-    $.ajax({
-      url: 'http://50.18.97.234/similarprops',
-      type: 'POST',
-      contentType: 'application/json',
-      success: (data) => {
-        console.log('Post to local db with metadata successful!', data);
-        this.fetchListingsMeta(currentListingId);
-      },
-      error: function(err) {
-        console.log("Failed to post metadata to local db ", err);
-      }
-    });
+  //   $.ajax({
+  //     url: 'http://50.18.97.234/similarprops',
+  //     type: 'POST',
+  //     contentType: 'application/json',
+  //     success: (data) => {
+  //       console.log('Post to local db with metadata successful!', data);
+  //       this.fetchListingsMeta(currentListingId);
+  //     },
+  //     error: function(err) {
+  //       console.log("Failed to post metadata to local db ", err);
+  //     }
+  //   });
 
-  };
+  // };
 
   componentDidMount(){
     console.log('Current listing is:', this.props.id);
-    this.postListingsMeta();
+    this.fetchListingsMeta(this.props.id);
   };
 
 

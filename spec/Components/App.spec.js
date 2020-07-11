@@ -9,32 +9,23 @@ describe('when App component renders...', () => {
 
   it('calls componentDidMount', () => {
     const spy = jest.spyOn(App.prototype, 'componentDidMount');
-    const wrapper = mount(<App id='1006'/>);
+    const wrapper = mount(<App id='1'/>);
     expect(spy).toHaveBeenCalled();
     spy.mockReset();
     spy.mockRestore();
   });
 
-  it('posts metadata to the local database on componentDidMount', () => {
-    const spy = jest.spyOn(App.prototype, 'postListingsMeta');
-    const wrapper = mount(<App id='1006'/>);
-    expect(spy).toHaveBeenCalled();
-    spy.mockReset();
-    spy.mockRestore();
-
-  });
 
   it('gets metadata from the local database and sets state', async () => {
     const ajaxSpy = jest.spyOn($, 'ajax');
-    const wrapper = mount(<App id='1006'/>);
-    const postDone = await wrapper.instance().postListingsMeta();
+    const wrapper = mount(<App id='1'/>);
 
-    wrapper.instance().fetchListingsMeta('1006');
+    wrapper.instance().fetchListingsMeta('1');
     expect(wrapper.state().similarProperties).toBeTruthy();
   });
 
   it('renders the Properties carousel onto the DOM', () => {
-    const wrapper = mount(<App id='1006'/>);
+    const wrapper = mount(<App id='1'/>);
     expect(wrapper.containsMatchingElement(<Properties/>));
   });
 });
