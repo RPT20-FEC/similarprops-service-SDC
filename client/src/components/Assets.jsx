@@ -8,6 +8,8 @@ import {Image} from './styledComponents.jsx';
 
 const Assets = (props) => {
 
+  props.assets = props.assets.split(',');
+  
   return (
 
     <Carousel showIndicators={true} showArrows={true} showThumbs={false} showStatus={false}>

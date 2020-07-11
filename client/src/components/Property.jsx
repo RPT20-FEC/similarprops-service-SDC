@@ -18,8 +18,8 @@ const Property = (props) => {
       </ImageContainer>
       <Details>
         <SleepArrangement>
-          {props.property.typeofroom + ' · '}
-          {props.property.totalbeds} {props.property.totalbeds === 1 ? 'bed' : 'beds'}
+          {props.property.typeOfRoom + ' · '}
+          {props.property.totalBeds} {props.property.totalBeds === 1 ? 'bed' : 'beds'}
         </SleepArrangement>
         <Star> {<img src='https://host-service.s3-us-west-1.amazonaws.com/star-xsm.png'/>} {props.property.stars} <Reviews>{'(' + props.property.reviews + ')'}</Reviews></Star>
         <HeadlinePricing>

@@ -29,7 +29,6 @@ const getPropertyOrProperties = async (inputId) => {
         var result = await cluster.query(queryById, {parameters: {LISTINGID: `${inputId}`}});
 
         let rows = result.rows[0].similarprops;
-        console.log(rows);
         return rows;
       } catch (error) {
         console.log('Error retrieving property by listing ID: ', error);
@@ -38,7 +37,7 @@ const getPropertyOrProperties = async (inputId) => {
 
   } else {
 
-    var queryAll = `SELECT * FROM \`similarprops\` LIMIT 3`;
+    var queryAll = `SELECT * FROM \`similarprops\``;
 
     try {
       var result = await cluster.query(queryAll);
@@ -56,12 +55,16 @@ const getPropertyOrProperties = async (inputId) => {
 
 const getSimilarProperties = async (currentId, currentLocation, currentPricing) => {
 
+    let lowerLimit = String(Number(currentPricing) - 25);
+    let upperLimit = String(Number(currentPricing + 25));
 
-    let queryTwelve = `SELECT * FROM \`similarprops\` WHERE listingId !=$LISTINGID AND location =$LOCATION AND listingId > '8999999' LIMIT 12`;
+    let queryTwelve = `SELECT * FROM \`similarprops\` WHERE listingId !=$LISTINGID AND location =$LOCATION AND pricing BETWEEN $LOWERLIMIT AND $UPPERLIMIT AND listingId > '8999999' LIMIT 12`;
 
     let params = { parameters: {
       LISTINGID: `${currentId}`,
-      LOCATION: `${currentLocation}`}};
+      LOCATION: `${currentLocation}`,
+      LOWERLIMIT: `${lowerLimit}`,
+      UPPERLIMIT: `${upperLimit}`}};
 
     try {
 
