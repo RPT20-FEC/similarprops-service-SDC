@@ -45,6 +45,7 @@ app.get('/similarprops/:id', async (req, res) => {
 
 });
 
+
 // retrieves all similar properties
 app.get('/similarprops', async (req, res) => {
   let properties = await getPropertyOrProperties(req.params.id);
