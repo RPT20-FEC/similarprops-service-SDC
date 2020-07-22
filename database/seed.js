@@ -19,11 +19,18 @@ const lorem = new LoremIpsum({
 const randomLocation = ['Los Angeles', 'Long Beach', 'San Francisco', 'Tokyo', 'Paris', 'Cave Creek', 'Boston'];
 
 const stockImages = [
-  'https://images.unsplash.com/photo-1505843513577-22bb7d21e455?ixlib=rb-1.2.1&auto=format&fit=crop&w=890&q=80',
-  'https://images.unsplash.com/photo-1416331108676-a22ccb276e35?ixlib=rb-1.2.1&auto=format&fit=crop&w=1047&q=80',
-  'https://images.unsplash.com/photo-1560185127-6ed189bf02f4?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80',
-  'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=750&q=80',
-  'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=755&q=80'
+  "https://images.unsplash.com/photo-1507089947368-19c1da9775ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=755&q=80",
+  "https://images.unsplash.com/photo-1489171078254-c3365d6e359f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1189&q=80",
+  "https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80",
+  "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1049&q=80",
+  "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1049&q=80",
+  "https://images.unsplash.com/photo-1504963642567-227b3bbd79de?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  "https://images.unsplash.com/photo-1557124816-e9b7d5440de2?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  "https://images.unsplash.com/photo-1574180045003-cad27065101e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  "https://images.unsplash.com/photo-1524634126442-357e0eac3c14?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  "https://images.unsplash.com/photo-1556597249-cd6a997737df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  "https://images.unsplash.com/photo-1521483756775-c37af386fce9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60",
+  "https://images.unsplash.com/photo-1556020685-ae41abfc9365?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60"
 ];
 
 
@@ -48,19 +55,6 @@ generateRandomPhotos = function() {
   let randomNum = Math.floor(Math.random() * (max - min + 1) + min);
 
   let selected = shuffled.slice(0, randomNum); // array of urls
-
-  // let string = '[';
-  // for (x = 0; x < selected.length; x++) {
-
-  //   string += selected[x] + ',';
-
-  //   if (x === selected.length - 1) {
-  //     string += selected[x] + ']';
-  //   };
-
-  // };
-
-  // return string;
 
   return selected;
 
@@ -174,29 +168,29 @@ class Writer {
 
 /*---------------------seeder function-----------------------*/
 
-const insertSeedData = function() {
-  const seederData = [];
+// const insertSeedData = function() {
+//   const seederData = [];
 
-  for (var i = 1001; i < 1120; i++) {
+//   for (var i = 1001; i < 1120; i++) {
 
-    var singleProp = {
-      listingId: i,
-      assets: stockImages,
-      location: randomLocation[Math.round(Math.random() * 7)],
-      typeOfRoom: lorem.generateWords(2),
-      totalBeds: Math.round(Math.random() * 3),
-      headline: lorem.generateWords(5),
-      pricing: generateRandomPrice(),
-      stars: generateRandomRating(),
-      reviews: Math.round(Math.random() * 1000)
-    };
+//     var singleProp = {
+//       listingId: i,
+//       assets: stockImages,
+//       location: randomLocation[Math.round(Math.random() * 7)],
+//       typeOfRoom: lorem.generateWords(2),
+//       totalBeds: Math.round(Math.random() * 3),
+//       headline: lorem.generateWords(5),
+//       pricing: generateRandomPrice(),
+//       stars: generateRandomRating(),
+//       reviews: Math.round(Math.random() * 1000)
+//     };
 
-    seederData.push(singleProp);
-  }
+//     seederData.push(singleProp);
+//   }
 
-  similarProperties.create(seederData)
-    .then(() => {console.log('Success creating and seeding db.')})
-    .catch((err) => {console.log(err)});
-};
+//   similarProperties.create(seederData)
+//     .then(() => {console.log('Success creating and seeding db.')})
+//     .catch((err) => {console.log(err)});
+// };
 
-insertSeedData();
+// insertSeedData();
