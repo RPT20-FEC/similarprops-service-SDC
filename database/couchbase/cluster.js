@@ -1,6 +1,6 @@
 var couchbase = require('couchbase');
 
-var cluster = new couchbase.Cluster('127.0.0.1', {
+var cluster = new couchbase.Cluster('13.56.158.70', {
   username: 'admin',
   password: 'workwork',
 });
